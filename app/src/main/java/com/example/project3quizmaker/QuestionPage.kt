@@ -8,17 +8,21 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import kotlin.random.Random
-
 class QuestionPage : AppCompatActivity() {
+    /*
+    initializes imageview to add picture
+     */
     lateinit var imageView: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_question_page)
 
-        imageView=findViewById(R.id.imageview2)
+        imageView=findViewById(R.id.imageview1)
         imageView.setImageResource(R.drawable.hated_math_1200x627)
-
+        /*
+        initializes variables that can be carried from fragment to fragment via intent
+         */
         var difficulty: String? = ""
         var operation: String? = ""
         var totalProblems: Int? = 0
@@ -47,17 +51,24 @@ class QuestionPage : AppCompatActivity() {
         leftText.text = leftNumber.toString()
         rightText.text = rightNumber.toString()
 
-
+        /*
+            gives access to textbox from the xml folder
+             */
         val editText: EditText =findViewById(R.id.editText)
         val clickDone: Button =findViewById(R.id.buttonDone)
         clickDone.setOnClickListener {
+            /*
+            keeps track of number of wrong and right answers
+     */
             val yourAnswer = Integer.parseInt(editText.text.trim().toString())
             if (yourAnswer == correctAnswer) {
                 correctAnswers = correctAnswers?.inc()
             } else {
                 wrongAnswers = wrongAnswers?.inc()
             }
-
+            /*
+            adds to intent folder so we have relevant information stored
+     */
             val totalAnswers = correctAnswers!! + wrongAnswers!!
             if (totalAnswers >= totalProblems!!) {
                 val intent = Intent(this, ResultPage::class.java)
@@ -75,6 +86,10 @@ class QuestionPage : AppCompatActivity() {
             }
         }
     }
+
+    /*
+    generates a number depending on the difficulty level
+     */
     private fun generateNumber(difficulty: String?): Int {
         var cap = 10
         if (difficulty == "Medium") {
@@ -86,11 +101,16 @@ class QuestionPage : AppCompatActivity() {
         return Random.nextInt(1 until cap)
 
     }
-
+    /*
+        for generating random numbers
+         */
     private fun Random.nextInt(range: IntRange): Int {
         return range.first + nextInt(range.last - range.first + 1)
     }
 
+    /*
+    converts operation into relevant symbol
+     */
     private fun displayOperation(operation: String?, text: TextView) {
         if (operation == "Addition") {
             text.text = "+"
@@ -105,6 +125,10 @@ class QuestionPage : AppCompatActivity() {
             text.text = "÷"
         }
     }
+
+    /*
+    computes the correct answer
+     */
 
     private fun solveProblem(operation: String?, leftNumber: Int, rightNumber: Int): Int {
         var answer = leftNumber + rightNumber

@@ -12,19 +12,27 @@ import android.widget.RadioGroup
 import android.widget.TextView
 
 
+
 class MainActivity : AppCompatActivity() {
+    /*
+    initializes imageview to add picture
+     */
     lateinit var imageView: ImageView
     var display = 10
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        /*
+        grabs imageview from xml file
+     */
         imageView=findViewById(R.id.imageview1)
         imageView.setImageResource(R.drawable.hated_math_1200x627)
 
         val write: TextView =findViewById(R.id.numQuestion)
-
+        /*
+            click listeners for toggling problem amount
+             */
         val clickDash: Button =findViewById(R.id.buttonDash)
         clickDash.setOnClickListener {
             if(display>1){
@@ -32,7 +40,9 @@ class MainActivity : AppCompatActivity() {
                 write.text=display.toString();
             }
         }
-
+        /*
+            adds bubbles to toggle difficulty
+             */
         val rgDifficulty: RadioGroup =findViewById(R.id.groupDifficulty)
         val rgOperation: RadioGroup =findViewById(R.id.groupOperation)
 
@@ -44,6 +54,9 @@ class MainActivity : AppCompatActivity() {
                 write.text=display.toString();
             }
         }
+        /*
+        switches page to start quiz
+     */
 
         val clickStart: Button =findViewById(R.id.buttonStart)
         clickStart.setOnClickListener {

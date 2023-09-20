@@ -29,7 +29,9 @@ class ResultPage : AppCompatActivity() {
         val textView: TextView = findViewById(R.id.textResult)
         textView.text = "Your score: $correctAnswers / $totalProblems"
 
-
+        /*
+    loops back to home screen so you can take quiz again
+     */
         val clickAgain: Button =findViewById(R.id.buttonAgain)
         clickAgain.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
