@@ -1,6 +1,7 @@
 package com.example.project3quizmaker
 
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,7 +11,7 @@ import android.widget.ImageView
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
-
+import android.widget.Toast
 
 
 class MainActivity : AppCompatActivity() {
@@ -47,6 +48,28 @@ class MainActivity : AppCompatActivity() {
         val rgOperation: RadioGroup =findViewById(R.id.groupOperation)
 
 
+        var totalProblems: Int? = 0
+        var correctAnswers: Int? = 0
+        var previousOperation: String? = ""
+
+        val extras = intent.extras
+        if (extras != null) {
+            totalProblems = extras.getInt("totalProblems")
+            correctAnswers = extras.getInt("correctAnswers")
+            previousOperation = extras.getString("operation")
+        }
+        if (totalProblems != 0) {
+            val resultMessage: TextView =findViewById(R.id.resultMessage)
+            val percentCorrect: Float? = correctAnswers?.toFloat()?.div(totalProblems?.toFloat() ?: return)
+            if (percentCorrect!! >= 0.8f) {
+                resultMessage.text = "You got $correctAnswers out of $totalProblems correct in $previousOperation. Good work!"
+            } else {
+                resultMessage.setTextColor(Color.RED);
+                resultMessage.text = "You got $correctAnswers out of $totalProblems correct in $previousOperation. You need to practice more!"
+            }
+        }
+
+
         val clickPlus: Button =findViewById(R.id.buttonPlus)
         clickPlus.setOnClickListener {
             if(display<99){
@@ -57,6 +80,8 @@ class MainActivity : AppCompatActivity() {
         /*
         switches page to start quiz
      */
+
+
 
         val clickStart: Button =findViewById(R.id.buttonStart)
         clickStart.setOnClickListener {

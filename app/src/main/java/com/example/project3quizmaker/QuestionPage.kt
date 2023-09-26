@@ -1,11 +1,14 @@
 package com.example.project3quizmaker
 
 import android.content.Intent
+import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlin.random.Random
 class QuestionPage : AppCompatActivity() {
@@ -14,11 +17,13 @@ class QuestionPage : AppCompatActivity() {
      */
     lateinit var imageView: ImageView
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_question_page)
+        var mediaPlayer = MediaPlayer()
 
-        imageView=findViewById(R.id.imageview1)
+        imageView=findViewById(R.id.imageview2)
         imageView.setImageResource(R.drawable.hated_math_1200x627)
         /*
         initializes variables that can be carried from fragment to fragment via intent
@@ -63,17 +68,28 @@ class QuestionPage : AppCompatActivity() {
             val yourAnswer = Integer.parseInt(editText.text.trim().toString())
             if (yourAnswer == correctAnswer) {
                 correctAnswers = correctAnswers?.inc()
+                mediaPlayer.setDataSource(this, Uri.parse("android.resource://"+this.packageName+"/"+R.raw.positive))
+                mediaPlayer.prepare()
+                mediaPlayer.start()
+                val toast = Toast.makeText(this, "Correct. Good work!", Toast.LENGTH_SHORT)
+                toast.show()
             } else {
                 wrongAnswers = wrongAnswers?.inc()
+                mediaPlayer.setDataSource(this, Uri.parse("android.resource://"+this.packageName+"/"+R.raw.negative))
+                mediaPlayer.prepare()
+                mediaPlayer.start()
+                val toast = Toast.makeText(this, "Wrong.", Toast.LENGTH_SHORT)
+                toast.show()
             }
             /*
             adds to intent folder so we have relevant information stored
      */
             val totalAnswers = correctAnswers!! + wrongAnswers!!
             if (totalAnswers >= totalProblems!!) {
-                val intent = Intent(this, ResultPage::class.java)
+                val intent = Intent(this, MainActivity::class.java)
                 intent.putExtra("totalProblems", totalProblems)
                 intent.putExtra("correctAnswers", correctAnswers)
+                intent.putExtra("operation", operation);
                 startActivity(intent)
             } else {
                 val intent = Intent(this, QuestionPage::class.java)
